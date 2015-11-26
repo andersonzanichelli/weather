@@ -1,1 +1,1 @@
-#ramdomic weather generator
+#randomic weather generator
