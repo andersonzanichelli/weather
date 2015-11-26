@@ -9,6 +9,10 @@ server.use(restify.bodyParser({ mapParams: true }));
 
 var weather = {};
 
+weather.provider = function() {
+	return "";
+}
+
 var randomicWeather = function() {
 
 	var sky = function(temperature) {
@@ -33,6 +37,7 @@ var randomicWeather = function() {
 	var temperature = positive - negative;
 	
 	var info = {
+		"provider": weather.provider(),
 		"city": city(),
 		"temperature": temperature,
 		"Humidity": humidity,
@@ -49,11 +54,7 @@ weather.hello = function(req, res, next) {
 }
 
 weather.now = function(req, res, next) {
-	var date = new Date();
-    var minutes = date.getMinutes();
-
-    if(minutes % 6 === 0)
-		res.json(randomicWeather());
+	res.json(randomicWeather());
 
 	next();
 }
