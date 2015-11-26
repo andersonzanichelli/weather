@@ -11,7 +11,55 @@ var weather = {};
 
 weather.provider = function() {
 	return "";
-}
+};
+
+weather.hello = function(req, res, next) {
+	res.send('Hello ' + req.params['param'] + '!');
+	next();
+};
+
+weather.now = function(req, res, next) {
+	var token = req.params['token'];
+	//descriptografar o token json
+	res.json(randomicWeather());
+
+	next();
+};
+
+weather.register = function(req, res, next) {
+	var user = {
+        "email": req.params['email'],
+        "password": req.params['password']
+    };
+
+    var params = {
+        "collection": 'users',
+        "response": res,
+        "callback": saveUser,
+        "request": req,
+        "user": user
+    };
+
+    weather.dbOperations(params);
+    next();
+};
+
+weather.dbOperations = function(params) {
+    mongodb.MongoClient.connect(uri, function(err, db) {
+        if(err) throw err;
+
+        params.db = db;
+        params.callback(params);
+    });
+};
+
+server.get('/hello/:param', weather.hello);
+server.get('/register/:email/:password', weather.register);
+server.get('/weather/:token', weather.now);
+
+server.listen(port, function() {
+  console.log('%s listening at server port %s', 'Weather Info', port);
+});
 
 var randomicWeather = function() {
 
@@ -46,23 +94,15 @@ var randomicWeather = function() {
 	};
 
 	return info;
-}
+};
 
-weather.hello = function(req, res, next) {
-	res.send('Hello ' + req.params['param'] + '!');
-	next();
-}
+var saveUser = function(params) {
+	var collection = params.db.collection(params.collection);
 
-weather.now = function(req, res, next) {
-	res.json(randomicWeather());
-
-	next();
-}
-
-server.get('/hello/:param', weather.hello);
-server.get('/weather', weather.now);
-
-
-server.listen(port, function() {
-  console.log('%s listening at server port %s', 'Weather Info', port);
-});
+    try {
+        collection.insert(params.user);
+        params.response.json({"insert": true});
+    } catch(ex) {
+        params.response.json({"insert": false, "err": "Error on trying to save the user."});
+    }
+};
