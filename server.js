@@ -20,9 +20,11 @@ weather.hello = function(req, res, next) {
 };
 
 weather.now = function(req, res, next) {
+    var j = JSON.parse(req.body);
+
     var user = {
-        "email": req.body['email'],
-        "password": req.body['password']
+        "email": j.email,
+        "password": j.password
     };
 
     console.log(user);
