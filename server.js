@@ -20,9 +20,10 @@ weather.hello = function(req, res, next) {
 };
 
 weather.now = function(req, res, next) {
+
     var user = {
-        "email": req.body.email,
-        "password": req.body.password
+        "email": req.params.email,
+        "password": req.params.password
     };
 
     var params = {
