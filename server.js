@@ -20,14 +20,10 @@ weather.hello = function(req, res, next) {
 };
 
 weather.now = function(req, res, next) {
-    var j = JSON.parse(req.body);
-
     var user = {
-        "email": j.email,
-        "password": j.password
+        "email": req.body.email,
+        "password": req.body.password
     };
-
-    console.log(user);
 
     var params = {
         "callback": weather.find,
@@ -35,8 +31,6 @@ weather.now = function(req, res, next) {
         "filter": user,
         "response": res
     };
-
-    console.log('before operations');
 
     weather.dbOperations(params);
     next();
