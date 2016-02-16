@@ -2,7 +2,7 @@ module.exports = {
 
 	now: function(provider) {
 		var weatherInformation = [];
-		var cities = ["Curitiba", "Maringá", "Londrina", "Foz do Iguaçu", "Guarapuava"];
+		var cities = ["Curitiba", "Maringa", "Londrina", "Foz do Iguacu", "Guarapuava"];
 		var time = {
 			HOUR: 23,
 			MINUTES: 59,
