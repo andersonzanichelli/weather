@@ -22,9 +22,20 @@ module.exports = {
 			var positive = Math.floor((Math.random() * 36) + 1);
 			var negative = Math.floor((Math.random() * 6) + 1);
 			var humidity = Math.floor((Math.random() * 100) + 1);
+			var wind = Math.floor((Math.random() * 25) + 1);
+			var preciptation = Math.floor((Math.random() * 100));
 			var temperature = positive - negative;
 
-			var condition = {"temperature": temperature, "humidity": humidity}
+			var termo = function() {
+                if(temperature < 15)
+                    return 'cold';
+                if(temperature >= 15 && temperature < 28)
+                    return 'good';
+                else
+                    return 'hot';
+            };
+
+			var condition = {"temperature": temperature, "humidity": humidity, "wind": wind, "preciptation": preciptation, "termo": termo()};
 
 			return condition;
 		};
@@ -62,8 +73,11 @@ module.exports = {
 				"provider": provider,
 				"city": cities[i],
 				"temperature": condition.temperature,
-				"Humidity": condition.humidity,
+				"humidity": condition.humidity,
 				"sky": sky(condition.temperature),
+				"wind": condition.wind,
+				"preciptation": condition.preciptation,
+				"termo": condition.termo,
 				"update": new Date(today.getFullYear(), today.getMonth(), today.getDate(), randonTime(time.HOUR), randonTime(time.MINUTES), randonTime(time.SECONDS), Math.floor((Math.random() * 999)))
 			};
 
